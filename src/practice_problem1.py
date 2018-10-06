@@ -5,8 +5,8 @@ This problem provides practice at:
   ***  IMPLEMENTING CLASSES.  ***
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Harry Chen(Xiaolong).
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 ########################################################################
 # Students:
@@ -39,15 +39,15 @@ def main():
     # UN-comment tests as you work the problems.
     ####################################################################
 
-#     run_test_init()
-#     run_test_append_string()
-#     run_test_double()
-#     run_test_shrink()
-#     run_test_double_then_shrink()
-#     run_test_reset()
-#     run_test_steal()
-#     run_test_get_history()
-#     run_test_combined_box()
+    #run_test_init()
+    #run_test_append_string()
+    #run_test_double()
+    #run_test_shrink()
+    #run_test_double_then_shrink()
+    #run_test_reset()
+    #run_test_steal()
+    #run_test_get_history()
+    run_test_combined_box()
 
 
 ########################################################################
@@ -93,8 +93,17 @@ class Box(object):
           :type contents: str
           :type volume: int
         """
+        self.contents = contents
+        self.volume = volume
+        self.c = self.contents
+        self.v = self.volume
+        if len(contents)>volume:
+            self.contents =''
+            self.c = ''
+        self.h = []
+
         # --------------------------------------------------------------
-        # TODO: 2. Implement and test this function.
+        # DONE: 2. Implement and test this function.
         #     See the testing code (below) for more examples.
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -103,7 +112,7 @@ class Box(object):
         #    TIME ESTIMATE:   5 minutes.
         # --------------------------------------------------------------
 
-    def append_string(self, additional_contents):
+    def append_string(self, additional_contents, s=None):
         """
         What comes in:
           -- self
@@ -134,8 +143,21 @@ class Box(object):
         Type hints:
           :type additional_contents: str
         """
+        s =''
+        if len(additional_contents)<= self.volume - len(self.contents):
+            self.contents += additional_contents
+            return s
+        else:
+            ori = len(self.contents)
+            for k in range(self.volume-len(self.contents)):
+                    self.contents += additional_contents[k]
+
+            for k in range (self.volume-ori,len(additional_contents)):
+                    s += additional_contents[k]
+            return s
+
         # --------------------------------------------------------------
-        # TODO: 3. Implement and test this function.
+        # DONE: 3. Implement and test this function.
         #     See the testing code (below) for more examples.
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -162,7 +184,7 @@ class Box(object):
         What comes in:
           -- self
         What goes out:
-          Returrns a string that is whatever substring of the
+          Returns a string that is whatever substring of the
           doubled contents did not fit in this Box
           (or the empty string if the entire doubled contents fit)
         Side effects:
@@ -190,8 +212,9 @@ class Box(object):
           #   s is 'Robot Fun'   [this is the part of the doubled
           #                       contents that did NOT fit]
         """
+        return (self.append_string(self.contents, s=None))
         # --------------------------------------------------------------
-        # TODO: 4. Implement and test this function.
+        # DONE: 4. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -239,8 +262,26 @@ class Box(object):
         Type hints:
           :type new_volume: int
         """
+        if new_volume < len(self.contents):
+            s =''
+            d =''
+            for k in range(new_volume):
+                s += self.contents[k]
+
+            self.volume = new_volume
+
+            for k in range (new_volume,len(self.contents)):
+                d += self.contents[k]
+            self.contents =s
+            return d
+
+        else :
+            self.volume = new_volume
+            s=''
+            return s
+
         # --------------------------------------------------------------
-        # TODO: 5. Implement and test this function.
+        # DONE: 5. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -295,8 +336,11 @@ class Box(object):
         Type hints:
           :type new_volume: int
         """
+        a = self.double()
+        b = self.shrink(new_volume)
+        return len(a+b)
         # --------------------------------------------------------------
-        # TODO: 6. Implement and test this function.
+        # DONE: 6. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -315,7 +359,7 @@ class Box(object):
           when this Box was constructed.
         """
         # --------------------------------------------------------------
-        # TODO: 7. Implement and test this function.
+        # DONE: 7. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -323,7 +367,9 @@ class Box(object):
         #    DIFFICULTY:      4
         #    TIME ESTIMATE:   5 minutes.
         # --------------------------------------------------------------
-
+        self.h += [self.contents]
+        self.volume = self.v
+        self.contents = self.c
     def steal(self, other_box):
         """
         What comes in:
@@ -342,8 +388,10 @@ class Box(object):
         Type hints:
           :type other_box: Box
         """
+        other_box.contents = self.append_string(other_box.contents)
+
         # --------------------------------------------------------------
-        # TODO: 8. Implement and test this function.
+        # DONE: 8. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -385,8 +433,9 @@ class Box(object):
           h = b.get_history()
           #   h is now ['GoodGo', 'GoodBye']
         """
+        return self.h
         # --------------------------------------------------------------
-        # TODO: 9. Implement and test this function.
+        # DONE: 9. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
@@ -411,8 +460,10 @@ class Box(object):
         Type hints:
           :type other_box: Box
         """
+        new = Box(self.contents+other_box.contents,self.volume+other_box.volume)
+        return new
         # --------------------------------------------------------------
-        # TODO: 10. Implement and test this function.
+        # DONE: 10. Implement and test this function.
         #     The testing code is already written for you (above).
         # --------------------------------------------------------------
         # --------------------------------------------------------------
